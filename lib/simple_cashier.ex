@@ -1,7 +1,8 @@
 defmodule SimpleCashier do
   @moduledoc false
 
-  @spec calculate_price([String.t()] | String.t(), map() | nil, map() | nil) :: number()
+  @spec calculate_price([String.t()] | String.t(), map() | nil, map() | nil) ::
+          number() | :invalid_item
   def calculate_price(items, prices \\ nil, deals \\ nil)
 
   def calculate_price(items, prices, deals) when is_binary(items) do
@@ -16,7 +17,7 @@ defmodule SimpleCashier do
 
     items
     |> Enum.frequencies()
-    |> Enum.reduce(0.0, &(&2 + price_for_item(&1, prices, deals)))
+    |> Enum.reduce(0.0, &sum_prices(&1, &2, prices, deals))
   end
 
   def default_deals,
@@ -33,12 +34,25 @@ defmodule SimpleCashier do
       "CF1" => 11.23
     }
 
-  defp price_for_item({item, item_frequency}, prices, deals) do
+  defp sum_prices(_, :invalid_item, _prices, _deals), do: :invalid_item
+
+  defp sum_prices({item, item_frequency}, total_price, prices, deals) do
+    item
+    |> price_for_item(item_frequency, prices, deals)
+    |> case do
+      price when is_number(price) -> total_price + price
+      error -> error
+    end
+  end
+
+  defp price_for_item(item, item_frequency, prices, deals) do
     deal = Map.get(deals, item)
     original_price_per_item = Map.get(prices, item)
 
     apply_deal(item_frequency, deal, original_price_per_item)
   end
+
+  defp apply_deal(_item_frequency, _deal, nil), do: :invalid_item
 
   defp apply_deal(
          item_frequency,

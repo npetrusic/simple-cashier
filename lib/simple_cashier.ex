@@ -1,6 +1,7 @@
 defmodule SimpleCashier do
   @moduledoc false
 
+  @spec calculate_price([String.t()] | String.t(), map() | nil, map() | nil) :: number()
   def calculate_price(items, prices \\ nil, deals \\ nil)
 
   def calculate_price(items, prices, deals) when is_binary(items) do

@@ -21,11 +21,11 @@ Our check-out can scan items in any order, and because the CEO and COO change th
 it needs to be flexible regarding our pricing rules.
 
 Test data:
-Basket: GR1,SR1,GR1,GR1,CF1
-Total price expected: £22.45
-Basket: GR1,GR1
-Total price expected: £3.11
-Basket: SR1,SR1,GR1,SR1
-Total price expected: £16.61
-Basket: GR1,CF1,SR1,CF1,CF1
-Total price expected: £30.57
+- Basket: `GR1,SR1,GR1,GR1,CF1`
+  - Total price expected: £22.45
+- Basket: `GR1,GR1`
+  - Total price expected: £3.11
+- Basket: `SR1,SR1,GR1,SR1`
+  - Total price expected: £16.61
+- Basket: `GR1,CF1,SR1,CF1,CF1`
+  - Total price expected: £30.57
